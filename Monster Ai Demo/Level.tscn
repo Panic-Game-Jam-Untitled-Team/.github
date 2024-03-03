@@ -1,0 +1,57 @@
+[gd_scene load_steps=9 format=3 uid="uid://kpug01gi7bjw"]
+
+[ext_resource type="PackedScene" uid="uid://dd6em00ncw1vt" path="res://player.tscn" id="1_b06ul"]
+[ext_resource type="PackedScene" uid="uid://bluqbduhcdabc" path="res://roadkill.tscn" id="2_x5bx0"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ulohy"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_fc1ma"]
+sky_material = SubResource("ProceduralSkyMaterial_ulohy")
+
+[sub_resource type="Environment" id="Environment_e2to4"]
+background_mode = 2
+sky = SubResource("Sky_fc1ma")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_h4rqa"]
+vertices = PackedVector3Array(-24.5306, 0.5, -24.4814, -24.5306, 0.5, 24.5186, 24.4694, 0.5, 24.5186, 24.4694, 0.5, -24.4814)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_54ffp"]
+size = Vector2(50, 50)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_mgn7w"]
+data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e2to4")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_h4rqa")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0306361, -3.57628e-07, 0.0186224)
+mesh = SubResource("PlaneMesh_54ffp")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/MeshInstance3D/StaticBody3D"]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0.00706673, 4.76837e-07, 0.0869226)
+shape = SubResource("ConcavePolygonShape3D_mgn7w")
+
+[node name="Player" parent="." instance=ExtResource("1_b06ul")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00203609, 1, -1.98532)
+linear_damp = 3.0
+
+[node name="Roadkill" parent="." instance=ExtResource("2_x5bx0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)

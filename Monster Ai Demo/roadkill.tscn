@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bluqbduhcdabc"]
+
+[ext_resource type="Script" path="res://Roadkill.gd" id="1_5e7ah"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbj3y"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gg8qf"]
+material = SubResource("StandardMaterial3D_tbj3y")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_86kef"]
+
+[node name="Roadkill" type="CharacterBody3D"]
+script = ExtResource("1_5e7ah")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_gg8qf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_86kef")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_height_offset = -0.5
